@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exelyn - Web Development & AI Automation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/fav.png">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#050505',
+                            card: '#0f0f0f',
+                            red: '#E10600',
+                            redGlow: '#ff1a1a',
+                            orange: '#FF6B00',
+                            yellow: '#FFC000',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E10600;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF6B00;
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #FFC000, #FF6B00, #E10600);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Glowing Elements */
+        .glow-border {
+            position: relative;
+        }
+        .glow-border::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #E10600, #FF6B00, #FFC000, #E10600);
+            z-index: -1;
+            border-radius: inherit;
+            background-size: 400%;
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .glow-border:hover::before {
+            opacity: 1;
+        }
+
+        .glow-shadow:hover {
+            box-shadow: 0 0 25px rgba(225, 6, 0, 0.4);
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(15, 15, 15, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-red selection:text-white">
+
+    <nav class="fixed w-full z-50 glass transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <img src="assets/exelyn_logo.png" alt="Exelyn Logo" class="h-12 w-12 object-cover rounded-full border border-gray-800" onerror="this.src='https://placehold.co/100x100/0a0a0a/E10600?text=EX'">
+                    <span class="font-display font-bold text-2xl tracking-wider">EXELYN</span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#layanan" class="text-gray-300 hover:text-brand-orange transition-colors font-medium text-sm uppercase tracking-widest">Layanan</a>
+                    <a href="#portfolio" class="text-gray-300 hover:text-brand-orange transition-colors font-medium text-sm uppercase tracking-widest">Portfolio</a>
+                    <a href="#kontak" class="text-gray-300 hover:text-brand-orange transition-colors font-medium text-sm uppercase tracking-widest">Kontak</a>
+                    <a href="https://tiktok.com/@exelyn.id" target="_blank" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-brand-red to-brand-orange hover:from-brand-orange hover:to-brand-yellow text-white font-semibold transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(225,6,0,0.5)]">
+                        TikTok @exelyn.id
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none">
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-card border-b border-gray-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#layanan" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-md">Layanan</a>
+                <a href="#portfolio" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-md">Portfolio</a>
+                <a href="https://tiktok.com/@exelyn.id" target="_blank" class="block px-3 py-2 text-base font-medium text-brand-orange hover:text-brand-yellow">@exelyn.id</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <!-- Background Effects -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-red opacity-10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange opacity-10 rounded-full blur-[100px] pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Text Content -->
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-card border border-gray-800 mb-6">
+                        <span class="w-2 h-2 rounded-full bg-brand-orange animate-pulse"></span>
+                        <span class="text-sm font-medium text-gray-300">Web Development & AI Automation</span>
+                    </div>
+                    <h1 class="text-5xl lg:text-7xl font-display font-bold leading-tight mb-6">
+                        Skalakan Bisnis Anda dengan <span class="text-gradient">Teknologi Masa Depan</span>
+                    </h1>
+                    <p class="text-lg lg:text-xl text-gray-400 mb-8 max-w-2xl mx-auto lg:mx-0">
+                        Exelyn membangun ekosistem digital cerdas. Mulai dari website profesional yang terintegrasi langsung dengan Database & Google Sheets, hingga sistem otomatisasi bisnis berbasis AI.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#portfolio" class="px-8 py-4 rounded-full bg-white text-black font-bold hover:bg-gray-200 transition-colors text-center">
+                            Lihat Portfolio
+                        </a>
+                        <a href="#kontak" class="px-8 py-4 rounded-full border border-gray-700 hover:border-brand-red hover:text-brand-red transition-all text-center glow-shadow">
+                            Konsultasi Gratis
+                        </a>
+                    </div>
+                </div>
+                <!-- Hero Graphic / Logo -->
+                <div class="relative hidden lg:flex justify-center items-center">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-brand-red to-brand-orange opacity-20 blur-[80px] rounded-full animate-pulse-slow"></div>
+                    <img src="assets/exelyn_logo.png" alt="Exelyn Logo" class="w-96 h-96 object-contain animate-float drop-shadow-[0_0_50px_rgba(225,6,0,0.5)]" onerror="this.src='https://placehold.co/400x400/0a0a0a/E10600?text=Exelyn'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="layanan" class="py-20 bg-brand-card relative border-t border-b border-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-display font-bold mb-4">Layanan <span class="text-brand-orange">Utama</span> Kami</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Solusi teknologi end-to-end untuk mendigitalisasi dan mengotomatiskan operasional bisnis Anda.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Service 1 -->
+                <div class="p-8 rounded-2xl bg-brand-dark border border-gray-800 hover:border-brand-red transition-colors glow-border group">
+                    <div class="w-14 h-14 rounded-xl bg-gray-900 flex items-center justify-center mb-6 group-hover:bg-brand-red transition-colors">
+                        <svg class="w-7 h-7 text-brand-orange group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3 font-display">Integrated Web Development</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Pembuatan website custom profesional yang tidak hanya tampil menarik, tapi fungsional. Terintegrasi mulus dengan Database SQL/NoSQL atau Google Sheets untuk manajemen data realtime yang mudah oleh tim Anda.
+                    </p>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="p-8 rounded-2xl bg-brand-dark border border-gray-800 hover:border-brand-orange transition-colors glow-border group">
+                    <div class="w-14 h-14 rounded-xl bg-gray-900 flex items-center justify-center mb-6 group-hover:bg-brand-orange transition-colors">
+                        <svg class="w-7 h-7 text-brand-red group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3 font-display">AI Business Automation</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Tingkatkan efisiensi bisnis hingga 10x lipat. Kami membangun sistem otomasi berbasis AI untuk Customer Service (Chatbot), Email Marketing otomatis, Data Entry, dan alur kerja harian yang repetitif.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold mb-4">Portfolio <span class="text-brand-red">Terpilih</span></h2>
+                    <p class="text-gray-400 max-w-xl">Lihat bagaimana kami mentransformasi ide menjadi produk digital berkinerja tinggi. Berikut beberapa karya terbaik Exelyn.</p>
+                </div>
+            </div>
+
+            <!-- Portfolio Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Project 1 -->
+                <div class="bg-brand-card rounded-2xl overflow-hidden border border-gray-800 group hover:-translate-y-2 transition-all duration-300 glow-shadow flex flex-col">
+                    <div class="relative overflow-hidden aspect-video">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all z-10"></div>
+                        <img src="assets/1.PNG" alt="Project 1" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute top-4 right-4 z-20">
+                            <span class="px-3 py-1 text-xs font-semibold bg-brand-dark/80 backdrop-blur border border-gray-700 rounded-full text-brand-yellow">Google Sheets Sync</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold font-display mb-2">Portal Pelacakan Status Pesanan & Proyek</h3>
+                        <p class="text-gray-400 text-sm mb-6 flex-1">Sebuah web portal di mana pelanggan dari suatu bisnis (misalnya percetakan, konveksi, bengkel, atau agensi) bisa mengecek sejauh mana proses pesanan mereka.</p>
+                        <a href="https://script.google.com/macros/s/AKfycbwSswovUeTmoUXXGgaLUfZseT3thh1jERij8FdufIzclT6Hxw0fit4pmnx1-fm8g_5yvg/exec" class="inline-flex items-center justify-center w-full py-3 rounded-lg bg-gray-800 hover:bg-brand-red text-white font-medium transition-colors group/btn">
+                            Kunjungi Website
+                            <svg class="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="bg-brand-card rounded-2xl overflow-hidden border border-gray-800 group hover:-translate-y-2 transition-all duration-300 glow-shadow flex flex-col">
+                    <div class="relative overflow-hidden aspect-video">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all z-10"></div>
+                        <img src="assets/2.PNG" alt="Project 2" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute top-4 right-4 z-20">
+                            <span class="px-3 py-1 text-xs font-semibold bg-brand-dark/80 backdrop-blur border border-gray-700 rounded-full text-brand-yellow">Google Sheets Sync</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold font-display mb-2">Mini POS & Real-time Inventory</h3>
+                        <p class="text-gray-400 text-sm mb-6 flex-1">Aplikasi kasir berbasis web yang sangat ringan dan cocok untuk UMKM atau toko retail. Setiap kali terjadi transaksi di web, data penjualan dan pengurangan stok barang akan otomatis ter-update di Google Sheets secara real-time.</p>
+                        <a href="https://script.google.com/macros/s/AKfycbyQ7ce9PUi4pPr7G_QSY6kFXAaM-leG2nt1SEbxxvyqAdtYui7bZwLEu8mI8py5lSVy/exec" class="inline-flex items-center justify-center w-full py-3 rounded-lg bg-gray-800 hover:bg-brand-orange text-white font-medium transition-colors group/btn">
+                            Kunjungi Website
+                            <svg class="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="bg-brand-card rounded-2xl overflow-hidden border border-gray-800 group hover:-translate-y-2 transition-all duration-300 glow-shadow flex flex-col">
+                    <div class="relative overflow-hidden aspect-video">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all z-10"></div>
+                        <img src="assets/3.PNG" alt="Project 3" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute top-4 right-4 z-20">
+                            <span class="px-3 py-1 text-xs font-semibold bg-brand-dark/80 backdrop-blur border border-gray-700 rounded-full text-brand-yellow">Google Sheets Sync</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold font-display mb-2">Interactive Kanban Board</h3>
+                        <p class="text-gray-400 text-sm mb-6 flex-1">Sebuah aplikasi manajemen tugas (task management) di mana layar dibagi menjadi beberapa kolom status, misalnya: "To Do" (Akan Dikerjakan), "In Progress" (Sedang Berjalan), dan "Done" (Selesai).</p>
+                        <a href="https://script.google.com/macros/s/AKfycbwmSrAr4e8MBPpEalPFEhDrBRmuVnqGueLrwvdd8T9ZAhxjDJyF4jqng2iHYf9j-Cih/exec" class="inline-flex items-center justify-center w-full py-3 rounded-lg bg-gray-800 hover:bg-brand-yellow hover:text-black text-white font-medium transition-colors group/btn">
+                            Kunjungi Website
+                            <svg class="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="kontak" class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-brand-card border-t border-gray-900"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-brand-red opacity-10 rounded-[100%] blur-[100px] pointer-events-none"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 relative z-10 text-center">
+            <img src="assets/exelyn_logo.png" alt="Exelyn Icon" class="w-20 h-20 mx-auto mb-6 object-contain drop-shadow-[0_0_20px_rgba(225,6,0,0.8)]" onerror="this.src='https://placehold.co/100x100/0a0a0a/E10600?text=EX'">
+            <h2 class="text-4xl md:text-5xl font-display font-bold mb-6">Siap Mengembangkan Bisnis Anda?</h2>
+            <p class="text-xl text-gray-400 mb-10">Mari diskusikan kebutuhan website dan otomatisasi AI Anda bersama Exelyn hari ini.</p>
+            <a href="https://wa.me/6285829385062?text=Halo%20Exelyn,%20saya%20tertarik%20dengan%20layanan%20pembuatan%20website%20dan%20otomatisasi%20AI." target="_blank" class="inline-flex items-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white text-lg font-bold hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(37,211,102,0.4)]">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                Hubungi via WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark py-8 border-t border-gray-900 text-center">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="text-gray-500 font-medium">&copy; 2026 Exelyn. Elevating Tech & Automation. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        const menuLinks = menu.querySelectorAll('a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
